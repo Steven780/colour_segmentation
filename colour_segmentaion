@@ -1,0 +1,64 @@
+%Title: Skin colour segmentation
+
+%Author: Steven R. Kinghorn
+
+%Created: 13/10/12
+
+
+clear all
+
+clc
+ 
+
+i = imread('notepad.jpg');
+
+id = double(i);
+ 
+
+redi = id(:,:,1);
+
+greeni = id(:,:,2);
+
+bluei = id(:,:,3);
+ 
+
+RedGreenDiff = (redi - greeni);
+
+RedBlueDiff = (redi - bluei);
+ 
+
+%upper thresholds 
+
+rUT = 80;
+
+rgUT = 80; %56;
+
+rbUT = 110; %98;
+ 
+
+%Lower thresholds
+
+rgLT = 15;
+
+rbLT = 15;
+ 
+
+%Segmented binary image
+
+segi = (redi>rUT & RedGreenDiff>rgLT & RedGreenDiff<rgUT & RedBlueDiff>rbLT & RedBlueDiff<rbUT);
+ 
+
+%Convert the segmented binary image into a segmented colour image.
+
+colSegi(:,:,1) = i(:,:,1).*segi;
+
+colSegi(:,:,2) = i(:,:,2).*segi;
+
+colSegi(:,:,3) = i(:,:,3).*segi;
+ 
+
+%Image is saved into the current working directory.
+
+imwrite(colSegi,'SkinColSeg.jpg')
+
+disp('........Colour segmented image has been saved........');
